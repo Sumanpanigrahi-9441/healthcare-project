@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Healthcare Triage Assistant</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 30px 15px;
+        background-color: #101827;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: auto;
+        padding: 30px;
+        background-color: #1e293b;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px black;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .header h1 {
+        color: #38bdf8;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        color: #cbd5e1;
+    }
+
+    .internet-status {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        background-color: #064e3b;
+        color: #6ee7b7;
+        font-weight: bold;
+    }
+
+    label {
+        display: block;
+        margin-top: 18px;
+        color: #facc15;
+        font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 7px;
+        border: 1px solid #475569;
+        border-radius: 8px;
+        background-color: #0f172a;
+        color: white;
+        font-size: 15px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #38bdf8;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 13px;
+        margin-top: 25px;
+        border: none;
+        border-radius: 8px;
+        background-color: #7c3aed;
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #9333ea;
+    }
+
+    .voice-button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: #0891b2;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .voice-button:hover {
+        background-color: #0e7490;
+    }
+
+    .voice-status {
+        text-align: center;
+        margin-top: 8px;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .scan-box {
+        margin-top: 10px;
+        padding: 15px;
+        background-color: #0f172a;
+        border: 1px dashed #38bdf8;
+        border-radius: 8px;
+    }
+
+    .scan-info {
+        margin-top: 8px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+    .result-box {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #172554;
+        border-radius: 10px;
+        border: 1px solid #38bdf8;
+    }
+
+    .result-title {
+        color: #38bdf8;
+        border-bottom: 2px solid #38bdf8;
+        padding-bottom: 10px;
+    }
+
+    .ai-result {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #0f172a;
+        border-radius: 8px;
+        color: #e2e8f0;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .warning {
+        margin-top: 15px;
+        padding: 12px;
+        background-color: #422006;
+        border-left: 5px solid #f59e0b;
+        border-radius: 5px;
+        color: #fde68a;
+    }
+
+    .hospital-result {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #064e3b;
+        border: 1px solid #34d399;
+        border-radius: 10px;
+    }
+
+    .hospital-result h2 {
+        color: #6ee7b7;
+        margin-top: 0;
+    }
+
+    .hospital-result p {
+        color: #d1fae5;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+
+    .verified {
+        color: #6ee7b7;
+        font-weight: bold;
+    }
+
+    .image-section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #172554;
+        border: 1px solid #38bdf8;
+        border-radius: 10px;
+    }
+
+    .image-section h2 {
+        color: #38bdf8;
+        margin-top: 0;
+    }
+
+    .image-section p {
+        color: #cbd5e1;
+    }
+
+    .image-button {
+        width: 100%;
+        padding: 13px;
+        margin-top: 15px;
+        border: none;
+        border-radius: 8px;
+        background-color: #059669;
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .image-button:hover {
+        background-color: #047857;
+    }
+
+    .generated-image {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #172554;
+        border: 1px solid #38bdf8;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .generated-image h2 {
+        color: #38bdf8;
+    }
+
+    .generated-image img {
+        width: 100%;
+        max-width: 600px;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+    <h1>🏥 Healthcare Triage AI</h1>
+
+    <p>
+        AI-assisted patient triage support system
+    </p>
+
+</div>
+
+<div
+    id="internetStatus"
+    class="internet-status"
+>
+    🌐 Checking internet connection...
+</div>
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+    <label>Patient Name</label>
+
+    <input
+        type="text"
+        name="name"
+        placeholder="Enter patient name"
+        required
+    >
+
+    <label>Age</label>
+
+    <input
+        type="number"
+        name="age"
+        placeholder="Enter patient age"
+        required
+    >
+
+    <label>Gender</label>
+
+    <select name="gender" required>
+
+        <option value="">
+            Select Gender
+        </option>
+
+        <option value="Male">
+            Male
+        </option>
+
+        <option value="Female">
+            Female
+        </option>
+
+        <option value="Other">
+            Other
+        </option>
+
+    </select>
+
+    <label>Voice Language</label>
+
+    <select
+        id="voiceLanguage"
+        name="voice_language"
+    >
+
+        <option value="en-IN">
+            English
+        </option>
+
+        <option value="hi-IN">
+            Hindi
+        </option>
+
+        <option value="or-IN">
+            Odia
+        </option>
+
+    </select>
+
+    <label>Symptoms</label>
+
+    <textarea
+        id="symptoms"
+        name="symptoms"
+        rows="5"
+        placeholder="Describe the patient's symptoms..."
+        required
+    ></textarea>
+
+    <button
+        type="button"
+        class="voice-button"
+        onclick="startVoice()"
+    >
+        🎤 Speak Symptoms
+    </button>
+
+    <div
+        id="voiceStatus"
+        class="voice-status"
+    >
+        Select language and speak your symptoms
+    </div>
+
+    <label>📷 Medical Report / Scan</label>
+
+    <div class="scan-box">
+
+        <input
+            type="file"
+            name="medical_scan"
+            accept="image/*,.pdf"
+        >
+
+        <div class="scan-info">
+            Upload a medical report or scan image.
+            Supported: JPG, PNG, JPEG and PDF.
+        </div>
+
+    </div>
+
+    <button type="submit">
+
+        🔍 Evaluate Patient
+
+    </button>
+
+</form>
+
+<div class="image-section">
+
+    <h2>🩺 AI Medical Visual Generator</h2>
+
+    <p>
+        Generate an educational medical visual
+        automatically from the patient's symptoms.
+    </p>
+
+    <form
+        action="/generate-image"
+        method="POST"
+        onsubmit="return prepareImageGeneration()"
+    >
+
+        <input
+            type="hidden"
+            name="symptoms"
+            id="imageSymptoms"
+        >
+
+        <button
+            type="submit"
+            class="image-button"
+        >
+            🎨 Generate Medical Image from Symptoms
+        </button>
+
+    </form>
+
+</div>
+
+{% if result %}
+
+<div class="result-box">
+
+    <h2 class="result-title">
+        🩺 AI Triage Result
+    </h2>
+
+    <div class="ai-result">
+        {{ result }}
+    </div>
+
+    {% if recommended_hospital %}
+
+    <div class="hospital-result">
+
+        <h2>
+            🏥 Recommended Verified Hospital
+        </h2>
+
+        <p>
+            <strong>Hospital:</strong>
+            {{ recommended_hospital[0] }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ recommended_hospital[1] }}
+        </p>
+
+        <p>
+            <strong>Department:</strong>
+            {{ recommended_hospital[2] }}
+        </p>
+
+        <p>
+            <strong>Beds:</strong>
+            {{ recommended_hospital[3] }}
+        </p>
+
+        <p>
+            <strong>Emergency:</strong>
+            {{ recommended_hospital[4] }}
+        </p>
+
+        <p>
+            <strong>Contact:</strong>
+            {{ recommended_hospital[5] }}
+        </p>
+
+        <p>
+            <strong>Verified:</strong>
+
+            <span class="verified">
+                {{ recommended_hospital[6] }}
+            </span>
+
+        </p>
+
+        <p>
+            <strong>Source:</strong>
+            {{ recommended_hospital[7] }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <div class="warning">
+
+        ⚠️ <b>Note:</b>
+
+        This tool provides AI-based triage support only.
+
+        It is not a medical diagnosis.
+
+        For serious or life-threatening symptoms,
+        seek immediate medical care.
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% if result == "Medical image generated successfully." %}
+
+<div class="generated-image">
+
+    <h2>
+        🖼️ Generated Medical Visual
+    </h2>
+
+    <img
+        src="{{ url_for('static', filename='generated_medical_image.png') }}"
+        alt="Generated Medical Visual"
+    >
+
+</div>
+
+{% endif %}
+
+<div class="footer">
+
+    Healthcare Triage Assistant • AI Support Tool
+
+</div>
+
+</div>
+
+<script>
+
+function updateInternetStatus() {
+
+    const status =
+        document.getElementById("internetStatus");
+
+    if (navigator.onLine) {
+
+        status.innerHTML =
+            "🌐 Internet Connected";
+
+        status.style.backgroundColor =
+            "#064e3b";
+
+        status.style.color =
+            "#6ee7b7";
+
+    }
+
+    else {
+
+        status.innerHTML =
+            "⚠️ Internet Not Available";
+
+        status.style.backgroundColor =
+            "#422006";
+
+        status.style.color =
+            "#fde68a";
+
+    }
+
+}
+
+updateInternetStatus();
+
+window.addEventListener(
+    "online",
+    updateInternetStatus
+);
+
+window.addEventListener(
+    "offline",
+    updateInternetStatus
+);
+
+function startVoice() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Voice input is not supported in this browser."
+        );
+
+        return;
+
+    }
+
+    const recognition =
+        new SpeechRecognition();
+
+    const selectedLanguage =
+        document.getElementById(
+            "voiceLanguage"
+        ).value;
+
+    recognition.lang =
+        selectedLanguage;
+
+    recognition.continuous =
+        false;
+
+    recognition.interimResults =
+        false;
+
+    const voiceStatus =
+        document.getElementById(
+            "voiceStatus"
+        );
+
+    voiceStatus.innerHTML =
+        "🎤 Listening... Please speak";
+
+    recognition.start();
+
+    recognition.onresult =
+        function(event) {
+
+            const voiceText =
+                event.results[0][0].transcript;
+
+            document.getElementById(
+                "symptoms"
+            ).value = voiceText;
+
+            voiceStatus.innerHTML =
+                "✅ Voice converted to text";
+
+        };
+
+    recognition.onerror =
+        function() {
+
+            voiceStatus.innerHTML =
+                "⚠️ Could not recognize voice. Please try again.";
+
+        };
+
+    recognition.onend =
+        function() {
+
+            if (
+                voiceStatus.innerHTML ===
+                "🎤 Listening... Please speak"
+            ) {
+
+                voiceStatus.innerHTML =
+                    "🎤 Voice input stopped";
+
+            }
+
+        };
+
+}
+
+function prepareImageGeneration() {
+
+    const symptoms =
+        document.getElementById(
+            "symptoms"
+        ).value.trim();
+
+    if (symptoms === "") {
+
+        alert(
+            "Please enter or speak the patient's symptoms first."
+        );
+
+        return false;
+
+    }
+
+    document.getElementById(
+        "imageSymptoms"
+    ).value = symptoms;
+
+    return true;
+
+}
+
+</script>
+
+</body>
+
+</html>

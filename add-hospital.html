@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Hospital</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f7ff;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 25px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🏥 Add Hospital</h1>
+
+    {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <form action="/add-hospital" method="POST">
+
+        <label>Hospital Name</label>
+        <input
+            type="text"
+            name="name"
+            placeholder="Enter hospital name"
+            required
+        >
+
+        <label>Location</label>
+        <input
+            type="text"
+            name="location"
+            placeholder="Enter hospital location"
+            required
+        >
+
+        <label>Department</label>
+        <input
+            type="text"
+            name="department"
+            placeholder="Example: Emergency, Cardiology"
+            required
+        >
+
+        <label>Available Beds</label>
+        <input
+            type="number"
+            name="beds"
+            placeholder="Enter available beds"
+            min="0"
+            required
+        >
+
+        <label>Emergency Service</label>
+        <select name="emergency" required>
+            <option value="">Select</option>
+            <option value="Available">Available</option>
+            <option value="Not Available">Not Available</option>
+        </select>
+
+        <label>Contact Number</label>
+        <input
+            type="text"
+            name="contact"
+            placeholder="Enter contact number"
+            required
+        >
+
+        <label>Hospital Verified</label>
+        <select name="verified" required>
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Information Source</label>
+        <input
+            type="text"
+            name="source"
+            placeholder="Example: Official Hospital Website"
+            required
+        >
+
+        <button type="submit">
+            💾 Save Hospital Data
+        </button>
+
+    </form>
+
+    <a href="/hospitals" class="back">
+        ← View Hospital List
+    </a>
+
+</div>
+
+</body>
+</html>
